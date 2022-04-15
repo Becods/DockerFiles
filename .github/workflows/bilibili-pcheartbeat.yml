@@ -1,12 +1,7 @@
-name: Build Docker Image For Unison
+name: Build Docker Image For bilibili-pcheartbeat
 
 on:
   workflow_dispatch:
-    inputs:
-      tag:
-        description: 'Image tag'
-        required: true
-        default: 'master'
 
 jobs:
   unison:
@@ -36,17 +31,15 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       -
-        name: Build and push unison
+        name: Build and push bilibili-pcheartbeat
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./unison/Dockerfile
-          platforms: linux/386,linux/amd64,linux/arm/v5,linux/arm/v7,linux/arm64/v8,linux/mips64le,linux/ppc64le,linux/s390x
-          push: true
+          file: ./bilibili-pcheartbeat/Dockerfile
+          platforms: linux/amd64,linux/arm/v7,linux/arm64/v8,linux/ppc64le,linux/s390x
+          push: ${{ github.event_name != 'pull_request' }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
-          build-args: UNISON_VERSION=${{ github.event.inputs.tag }}
           tags: |
-            becodreyes/unison:latest
-            becodreyes/unison:${{ env.UNISON_VERSION }}
-            becodreyes/unison:${{ steps.date.outputs.today }}
+            becodreyes/bilibili-pcheartbeat:latest
+            becodreyes/bilibili-pcheartbeat:${{ steps.date.outputs.today }}
