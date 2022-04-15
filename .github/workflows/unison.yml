@@ -1,4 +1,4 @@
-name: Build Docker Image
+name: Build Docker Image For Unison
 
 on:
   workflow_dispatch:
