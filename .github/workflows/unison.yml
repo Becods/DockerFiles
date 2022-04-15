@@ -30,6 +30,9 @@ jobs:
         name: Available platforms
         run: echo ${{ steps.buildx.outputs.platforms }}
       -
+        name: Get Image Tag Name
+        run: echo "UNISON_VERSION=${{ github.event.inputs.tag }}" >> $GITHUB_ENV
+      -
         name: Login to DockerHub
         uses: docker/login-action@v1
         with:
