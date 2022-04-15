@@ -50,5 +50,5 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
           tags: |
             becodreyes/unison:dev
-            becodreyes/unison:${{ env.TAG_NAME }}
+            becodreyes/unison:${{ env.UNISON_VERSION }}
             becodreyes/unison:${{ steps.date.outputs.today }}
