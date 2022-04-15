@@ -9,7 +9,7 @@ on:
         default: 'master'
 
 jobs:
-  unison:
+  build:
     runs-on: ubuntu-latest
     steps:
       -
