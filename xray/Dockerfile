@@ -2,13 +2,11 @@ FROM golang:1.18 as builder
 ENV XRAY_VERSION 1.5.5
 
 RUN apt-get install -y git wget \
- && mkdir -p /rootfs/usr/share/xray/ \
- && mkdir -p /rootfs/var/log/xray/ \
- && mkdir -p /rootfs/etc/xray \
+ && mkdir -p /rootfs/usr/share/xray/ /rootfs/usr/bin /rootfs/var/log/xray /rootfs/etc/xray \
  && git clone -b v${XRAY_VERSION} --depth 1 https://github.com/XTLS/Xray-core \
  && cd Xray-core \
  && go mod download \
- && CGO_ENABLED=0 go build -o /rootfs/xray -trimpath -ldflags '-s -w -buildid=' ./main \
+ && CGO_ENABLED=0 go build -o /rootfs/usr/bin/xray -trimpath -ldflags '-s -w -buildid=' ./main \
  && echo '{}' > /rootfs/etc/xray/config.json \
  && wget -O /rootfs/usr/share/xray/geosite.dat https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat \
  && wget -O /rootfs/usr/share/xray/geoip.dat https://github.com/v2fly/geoip/releases/latest/download/geoip.dat
