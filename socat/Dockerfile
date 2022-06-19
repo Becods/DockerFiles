@@ -69,4 +69,5 @@ LABEL maintainer="BecodReyes <i@muir.fun>"
 
 COPY --from=builder /socat /
 
-CMD ["/socat", "-h"]
+ENTRYPOINT ["/socat"]
+CMD ["-h"]
