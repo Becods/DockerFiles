@@ -6,7 +6,7 @@ RUN apk add git \
 FROM python:alpine3.16
 
 COPY --from=git /app /app
-RUN pip install -r /app/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt
 
 ENTRYPOINT ["python3"]
 CMD ["/app/source/server/main.py","debug"]
