@@ -29,9 +29,9 @@ key=`echo -n $password$domain$random_number|md5sum|awk '{print $1}'`
 
 mkdir ./$domain
 
-json=`curl -s $server"/?domain="$domain"&m="$random_number"&token="$key`
+json=`curl -s $server"/?domain="$domain"&&m="$random_number"&&token="$key`
 
-if [[ -n `echo "$json"|grep fullchain` ]];then
+if [[ ! -n `echo "$json"|grep fullchain` ]];then
 	echo "获取失败，请检查密码，域名是否正确"
 	exit
 fi
