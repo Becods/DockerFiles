@@ -7,8 +7,7 @@
 
 random_number=$RANDOM
 
-while getopts ":d:p:s:" opt_name
-do
+while getopts ":d:p:s:" opt_name;do
     case "$opt_name" in
         'd')
             domain="$OPTARG";;
@@ -30,9 +29,9 @@ key=`echo -n $password$domain$random_number|md5sum|awk '{print $1}'`
 
 mkdir ./$domain
 
-json=`curl -s $server"/?domain="$domain"&&m="$random_number"&&token="$key`
+json=`curl -s $server"/?domain="$domain"&m="$random_number"&token="$key`
 
-if [[ -n `echo "$json"|grep -v fullchain` ]];then
+if [[ -n `echo "$json"|grep fullchain` ]];then
 	echo "获取失败，请检查密码，域名是否正确"
 	exit
 fi
@@ -44,7 +43,7 @@ ecc_key=`echo "$json"|jq -c '.ecc.key'|sed 's/"//g'`
 iv=`echo "$json"|jq -c '.iv'|sed 's/"//g'`
 key=`echo -n $password$domain$random_number|xxd -p`
 
-echo -n "$rsa_fullchain"|openssl aes-256-cbc -d -a -A -K $key -iv $iv -out /acme.sh/$domain/rsa.crt 2>/dev/null
+echo -n "$rsa_fullchain"|openssl aes-256-cbc -d -a -A -K $key -iv $iv -out /acme.sh/$domain/rsa.crt
 echo -n "$rsa_key"|openssl aes-256-cbc -d -a -A -K $key -iv $iv -out /acme.sh/$domain/rsa.key 2>/dev/null
 echo -n "$ecc_fullchain"|openssl aes-256-cbc -d -a -A -K $key -iv $iv -out /acme.sh/$domain/ecc.crt 2>/dev/null
 echo -n "$ecc_key"|openssl aes-256-cbc -d -a -A -K $key -iv $iv -out /acme.sh/$domain/ecc.key 2>/dev/null
