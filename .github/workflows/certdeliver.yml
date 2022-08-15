@@ -1,4 +1,4 @@
-name: Build Docker Image For bilibili-pcheartbeat
+name: Build Docker Image For CertDeliver
 
 on:
   workflow_dispatch:
@@ -22,12 +22,12 @@ jobs:
       - name: Set current date as env variable
         run: echo "BuildTime=$(date +'%Y%m%d')" >> $GITHUB_ENV
 
-      - name: Make bilibili-pcheartbeat
+      - name: Make CertDeliver
         uses: docker/build-push-action@v2
         with:
-          context: ./bilibili-pcheartbeat
-          file: ./bilibili-pcheartbeat/Dockerfile
+          context: ./certdeliver
+          file: ./certdeliver/Dockerfile
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/bilibili-pcheartbeat:${{ env.BuildTime }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/bilibili-pcheartbeat:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/certdeliver:${{ env.BuildTime }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/certdeliver:latest
