@@ -27,7 +27,7 @@ key=`echo -n $password$domain$random_number|md5sum|awk '{print $1}'`
 [ ! $password ]&&echo "password is null"&&exit
 [ ! $server ]&&echo "server is null"&&exit
 
-mkdir ./$domain
+mkdir /acme.sh/$domain
 
 json=`curl -s $server"/?domain="$domain"&&m="$random_number"&&token="$key`
 
