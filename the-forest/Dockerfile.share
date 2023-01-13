@@ -1,0 +1,11 @@
+FROM the-forest:building
+
+RUN "${STEAMCMDDIR}/steamcmd.sh" \
+        +login anonymous \
+        +@sSteamCmdForcePlatformType windows \
+        +force_install_dir "${STEAMAPPDIR}" \
+        +app_update "${STEAMAPPID}" \
+        validate \
+        +quit
+
+CMD [""]

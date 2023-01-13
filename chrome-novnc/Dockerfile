@@ -4,9 +4,11 @@ LABEL Maintainer "Becod <i@Muir.fun>"
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-ENV	VNC_PASS="samplepass" \
+ENV	VNC_PASS="ChangeMe" \
 	VNC_TITLE="Chrome" \
 	VNC_RESOLUTION="1280x720" \
+	APP_ARGS="" \
+	LAUNCH_URL="https://muir.fun" \
 	DISPLAY=:0 \
 	PORT=6800 \
 	LANG=zh_CN.UTF-8 \
@@ -15,7 +17,7 @@ ENV	VNC_PASS="samplepass" \
 	TZ="Asia/Shanghai"
 
 RUN	apt update \
- && apt install --no-install-recommends -y python3-minimal websockify xvfb x11vnc procps supervisor fluxbox gnupg git wget tzdata ca-certificates xfonts-base fonts-wqy-microhei \
+ && apt install --no-install-recommends -y python3-minimal websockify xvfb x11vnc procps supervisor fluxbox gnupg git wget tzdata ca-certificates xfonts-base libgbm1 fonts-wqy-microhei \
  && wget -qO - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
  && echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
  && apt update \
@@ -25,7 +27,6 @@ RUN	apt update \
  && git clone --depth 1 https://github.com/novnc/noVNC /var/noVNC \
  && ln -s /var/noVNC/vnc_auto.html /var/noVNC/index.html \
  && rm -rf /var/noVNC/.git \
- && openssl req -new -newkey rsa:2048 -days 36500 -nodes -x509 -subj "/C=CN/ST=VNC/L=VNC/O=VNC/CN=VNC" -keyout /etc/ssl/novnc.key  -out /etc/ssl/novnc.cert \
  && apt autoremove git -y \
  && apt clean \
  && rm -rf /var/lib/apt/lists/* \
@@ -38,7 +39,7 @@ session.screen0.toolbar.visible: false \
 
 EXPOSE 6800
 
-COPY supervisiord.conf /supervisord.conf
+COPY supervisord.conf /supervisord.conf
 
 ENTRYPOINT ["supervisord", "-l", "/var/log/supervisord.log", "-c"]
 
